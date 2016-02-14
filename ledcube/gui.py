@@ -1,43 +1,82 @@
-import Tkinter as tk
-import ttk
+import tkinter as tk
+import tkinter.ttk as ttk
+from tkinter import messagebox
+import tkinter.filedialog as filedialog
 
 from editorframe import *
-from optionsframe import *
 
 class Application(ttk.Frame):
     def __init__(self, parent=None):
-        ttk.Frame.__init__(self, parent)
+        ttk.Frame.__init__(self, parent, width=800, height=600, padding="10 10 10 10")
+
+        self.menubar = tk.Menu(parent, tearoff=False)
+        parent.config(menu=self.menubar)
+        self.make_menu()
+
         self.pack()
 
-        self.options = None
+        self.pattern = None
 
-        self.make_widgets()
+    def make_menu(self):
 
-    def make_widgets(self):
-
-        self.toggle_button = ttk.Button(self, text='Editor', command=self.toggle_frame)
-
-        self.current_frame = OptionsFrame(self)
-        self.current_frame_name = 'options'
+        filemenu = tk.Menu(self.menubar, tearoff=False)
+        filemenu.add_command(label='New', command=self.create_new_pattern)
+        filemenu.add_command(label='Open', command=self.load_pattern)
+        filemenu.add_command(label='Save', command=self.save_pattern)
+        filemenu.add_command(label='Close', command=self.close_pattern)
+        self.menubar.add_cascade(label='File', menu=filemenu)
 
         for child in self.winfo_children():
             child.pack()
 
-    def toggle_frame(self):
-        print self.current_frame_name
-        if self.current_frame_name == 'options':
-            self.current_frame_name = 'editor'
-            self.toggle_button.config(text='Options')
-            self.options = self.current_frame.output_options()
-            self.current_frame.destroy()
-            self.current_frame = EditorFrame(self)
+    def create_new_pattern(self):
+        if self.pattern:
+            response = tk.messagebox.askyesno(message='Are you sure you want to overwrite the current pattern?', icon='question', title='New Pattern?')
+            if response == 'yes':
+                self.pattern = cube.Pattern()
+                self.editor_frame.destroy()
+                self.editor_frame = EditorFrame(self, self.pattern)
+            elif response == 'no':
+                pass
 
-        elif self.current_frame_name == 'editor':
-            self.toggle_button.config(text='Editor')
-            self.current_frame_name = 'options'
-            self.current_frame.destroy()
-            self.current_frame = OptionsFrame(self)
+        elif not self.pattern:
+            self.pattern = cube.Pattern()
+            self.editor_frame = EditorFrame(self, self.pattern)
 
         else:
-            print("WARNING: Invalid value for current_frame")
-            pass
+            print('ERROR: Program does not know if a pattern exists or not')
+
+    def load_pattern(self):
+
+        if self.pattern:
+            response = tk.messagebox.askyesno(message='Are you sure you want to overwrite the current pattern?', icon='question', title='Load Pattern?')
+            if response == True:
+                filename = filedialog.askopenfilename()
+                self.pattern = cube.Pattern()
+                self.pattern.load(filename)
+                self.editor_frame.destroy()
+                self.editor_frame = EditorFrame(self, self.pattern)
+            elif response == False:
+                print('No pattern loaded.')
+
+            else:
+                print('Response was not yes or no')
+
+        else:
+            filename = filedialog.askopenfilename()
+            self.pattern = cube.Pattern()
+            self.pattern.load(filename)
+            self.editor_frame = EditorFrame(self, self.pattern)
+
+    def save_pattern(self):
+
+        if self.pattern:
+            filename = filedialog.asksaveasfilename()
+            self.pattern.save(filename)
+
+        else:
+            tk.messagebox(message='There is no pattern to save.')
+
+    def close_pattern(self):
+        self.editor_frame.destroy()
+        self.pattern = None

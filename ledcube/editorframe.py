@@ -1,33 +1,42 @@
-import Tkinter as tk
-import ttk
+import tkinter as tk
+import tkinter.ttk as ttk
 
 import cube
 
 class EditorFrame(ttk.Frame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, pattern):
         ttk.Frame.__init__(self, parent)
         self.pack()
 
+        self.pattern = pattern
+        self.voxel_editor = []
+        self.pattern_view = []
+
         self.make_menu_bar()
         self.make_pattern_display()
-        self.make_voxel_editor()
+        self.make_frame_editor()
         self.make_3d_view()
 
     def make_menu_bar(self):
-        ttk.Button(self, text='New Pattern', command=self.create_new_pattern())
-        ttk.Button(self, text='Add Voxel')
+        ttk.Button(self, text='New Pattern', command=self.create_new_pattern)
+        ttk.Button(self, text='Add Frame')
 
         for child in self.winfo_children():
             child.pack()
 
     def make_pattern_display(self):
+        self.pattern_view = ttk.LabelFrame(self, text='Patern Editor', padding="10 10 10 10")
+
+        ttk.Button(self.pattern_view, text="blah").pack()
+
+
         for child in self.winfo_children():
             child.pack()
 
-    def make_voxel_editor(self):
+    def make_frame_editor(self):
 
-        vview = VoxelView(self)
+        self.frame_editor = FrameEditor(self)
 
         for child in self.winfo_children():
             child.pack()
@@ -45,10 +54,11 @@ class EditorFrame(ttk.Frame):
     def add_voxel_to_pattern(self):
         self.current_pattern.add_voxel(self.current_voxel)
 
-class VoxelView(ttk.Frame):
+class FrameEditor(ttk.LabelFrame):
 
     def __init__(self, parent):
-        ttk.Frame.__init__(self, parent)
+        ttk.LabelFrame.__init__(self, parent, text='Frame Editor')
+        self.config(padding="10 10 10 10")
         self.pack()
 
         self.buttons = []
@@ -56,7 +66,8 @@ class VoxelView(ttk.Frame):
         self.make_buttons(3, 3, 3)
 
     def button_press(self, button_id):
-        print "Callback ID: " + str(button_id)
+        print ("Callback ID: " + str(button_id))
+
         if self.buttons[button_id].cget('text') == '':
             self.buttons[button_id].config(text='X')
         else:
@@ -74,8 +85,7 @@ class VoxelView(ttk.Frame):
             end = start + max_height
 
             for height in range(start, end):
-                self.buttons.append(ttk.Button(self, text='', command=lambda bid=button_id: self.button_press(bid)))
-                print "Assigned ID: " + str(button_id)
+                self.buttons.append(ttk.Button(self, text='', width=3, command=lambda bid=button_id: self.button_press(bid)))
                 self.buttons[-1].grid(row=height, column=length)
                 button_id += 1
 
