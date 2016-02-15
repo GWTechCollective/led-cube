@@ -33,14 +33,14 @@ class Application(ttk.Frame):
         if self.pattern:
             response = tk.messagebox.askyesno(message='Are you sure you want to overwrite the current pattern?', icon='question', title='New Pattern?')
             if response == 'yes':
-                self.pattern = cube.Pattern()
+                self.pattern = cube.Pattern((3, 3, 3))
                 self.editor_frame.destroy()
                 self.editor_frame = EditorFrame(self, self.pattern)
             elif response == 'no':
                 pass
 
         elif not self.pattern:
-            self.pattern = cube.Pattern()
+            self.pattern = cube.Pattern((3, 3, 3))
             self.editor_frame = EditorFrame(self, self.pattern)
 
         else:

@@ -1,18 +1,20 @@
 import numpy as np
+import json
 
 class Pattern:
 
-    def __init__(self):
-        self.length = 0
-        self.width = 0
-        self.height = 0
+    def __init__(self, dim):
+        self.length = dim[0]
+        self.width = dim[1]
+        self.height = dim[2]
         self.cursor = 0
         self.frames = []
         self.frame_count = 0
 
-    def add_frame(self, frame):
+    def add_frame(self, frame_values, duration):
+        dims = (self.height, self.length, self.width)
         self.frame_count += 1
-        self.frames.append(frame)
+        self.frames.append(Frame(dims, frame_values, duration))
 
     def remove_frame(self, index):
         self.frame_count -= 1
@@ -23,6 +25,7 @@ class Pattern:
 
     def save(self, filename):
         print(filename)
+        json.dumps(self.frames)
         pass
 
     def load(self, filename):
@@ -32,6 +35,9 @@ class Pattern:
 
 class Frame:
 
-    def __init__(self, length, width, height):
-        self.values = np.zeros((length, width, height))
-        self.duration = 0
+    def __init__(self,dim, values, duration):
+        self.values = np.array(values)
+        self.values = self.values.reshape((dim[0], dim[1], dim[2]))
+        print(self.values)
+
+        self.duration = duration
