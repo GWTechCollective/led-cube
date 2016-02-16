@@ -9,22 +9,34 @@ class Pattern:
         self.height = dim[2]
         self.cursor = 0
         self.frames = []
-        self.frame_count = 0
 
-    def add_frame(self, frame_values, duration):
+    def add_frame(self, index, frame_values, duration):
+
         dims = (self.height, self.length, self.width)
-        self.frame_count += 1
-        self.frames.append(Frame(dims, frame_values, duration))
+
+        if self.frames:
+            self.frames.insert(index, Frame(dims, frame_values, duration))
+        else:
+            self.frames.append(Frame(dims, frame_values, duration))
+
+    def save_frame(self, index, frame_values, duration):
+        dims = (self.height, self.length, self.width)
+        self.frames[index] = Frame(dims, frame_values, duration)
 
     def remove_frame(self, index):
-        self.frame_count -= 1
-        self.frame.remove(index)
+        self.frames.pop(index)
 
-    def move_frame(self, old_index, new_index):
-        self.voxels.insert(new_index, self.voxels.pop(old_index))
+    def get_frame(self, index):
+        frame_values = self.frames[index].values.reshape(self.length*self.height*self.width)
+        return list(frame_values)
+
+    def move_frame_up(self, index):
+        self.frames.insert(index-1, self.frames.pop(index))
+
+    def move_frame_down(self, index):
+        self.frames.insert(index+1, self.frames.pop(index))
 
     def save(self, filename):
-        print(filename)
         json.dumps(self.frames)
         pass
 

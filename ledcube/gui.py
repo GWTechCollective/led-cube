@@ -52,10 +52,12 @@ class Application(ttk.Frame):
             response = tk.messagebox.askyesno(message='Are you sure you want to overwrite the current pattern?', icon='question', title='Load Pattern?')
             if response == True:
                 filename = filedialog.askopenfilename()
-                self.pattern = cube.Pattern()
-                self.pattern.load(filename)
-                self.editor_frame.destroy()
-                self.editor_frame = EditorFrame(self, self.pattern)
+                print("Filename: "+filename)
+                if filename:
+                    self.pattern = cube.Pattern()
+                    self.pattern.load(filename)
+                    self.editor_frame.destroy()
+                    self.editor_frame = EditorFrame(self, self.pattern)
             elif response == False:
                 print('No pattern loaded.')
 
@@ -64,15 +66,17 @@ class Application(ttk.Frame):
 
         else:
             filename = filedialog.askopenfilename()
-            self.pattern = cube.Pattern()
-            self.pattern.load(filename)
-            self.editor_frame = EditorFrame(self, self.pattern)
+            if filename:
+                self.pattern = cube.Pattern()
+                self.pattern.load(filename)
+                self.editor_frame = EditorFrame(self, self.pattern)
 
     def save_pattern(self):
 
         if self.pattern:
             filename = filedialog.asksaveasfilename()
-            self.pattern.save(filename)
+            if filename:
+                self.pattern.save(filename)
 
         else:
             tk.messagebox(message='There is no pattern to save.')
