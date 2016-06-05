@@ -1,17 +1,12 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 
-from math import floor
-
-import cube
-
 LENGTH = 3
 WIDTH = 3
 HEIGHT = 3
 
 
 class EditorFrame(ttk.Frame):
-
     def __init__(self, parent, pattern):
         ttk.Frame.__init__(self, parent)
         self.pack(fill=tk.BOTH)
@@ -20,12 +15,12 @@ class EditorFrame(ttk.Frame):
 
         self.frame_view = None
         self.pattern_view = None
+        self.threed_view = None
 
         self.make_widgets()
         self.update_views()
 
     def make_widgets(self):
-
         self.pattern_view = PatternView(self)
         self.frame_view = FrameView(self)
         self.threed_view = ThreeDView(self)
@@ -59,6 +54,7 @@ class EditorFrame(ttk.Frame):
         index = self.pattern_view.get_index()
         self.pattern.move_frame_up(index)
         self.update_views()
+
     def move_frame_down(self):
         index = self.pattern_view.get_index()
         self.pattern.move_frame_down(index)
@@ -70,7 +66,6 @@ class EditorFrame(ttk.Frame):
 
 
 class PatternView(ttk.LabelFrame):
-
     def __init__(self, parent):
         ttk.LabelFrame.__init__(self, parent, text='Pattern Editor', padding="10 10 10 10")
         self.parent = parent
@@ -94,7 +89,6 @@ class PatternView(ttk.LabelFrame):
         self.frame_list.delete(0, tk.END)
 
         for index, frame in enumerate(self.parent.pattern.frames):
-
             self.frame_list.insert(tk.END, "Frame " + str(index))
 
     def on_select(self, event):
@@ -108,8 +102,8 @@ class PatternView(ttk.LabelFrame):
         else:
             return -1
 
-class FrameView(ttk.LabelFrame):
 
+class FrameView(ttk.LabelFrame):
     def __init__(self, parent):
         ttk.LabelFrame.__init__(self, parent, text='Frame Editor', padding="10 10 10 10")
         self.parent = parent
@@ -142,16 +136,16 @@ class FrameView(ttk.LabelFrame):
         for width in range(max_width):
             for height in range(max_height):
                 for length in range(max_length):
-                    self.led_buttons.append(ttk.Button(self.led_button_frame, text='', width=3, command=lambda bid=button_id: self.button_press(bid)))
-                    self.led_buttons[-1].grid(sticky=tk.N+tk.S+tk.E+tk.W, row=height, column=(length+width*(max_length+1)))
+                    self.led_buttons.append(ttk.Button(self.led_button_frame, text='', width=3,
+                                                       command=lambda bid=button_id: self.button_press(bid)))
+                    self.led_buttons[-1].grid(sticky=tk.N + tk.S + tk.E + tk.W, row=height,
+                                              column=(length + width * (max_length + 1)))
                     button_id += 1
         # make this more general at some point
         ttk.Separator(self.led_button_frame, orient=tk.VERTICAL).grid(row=0, column=3, rowspan=max_height, sticky="NS")
         ttk.Separator(self.led_button_frame, orient=tk.VERTICAL).grid(row=0, column=7, rowspan=max_height, sticky="NS")
         self.led_button_frame.columnconfigure(3, minsize=10)
         self.led_button_frame.columnconfigure(7, minsize=10)
-
-
 
     def set_frame(self, values):
         for index, led in enumerate(self.led_buttons):
@@ -179,8 +173,8 @@ class FrameView(ttk.LabelFrame):
     def update_view(self):
         pass
 
-class ThreeDView(ttk.LabelFrame):
 
+class ThreeDView(ttk.LabelFrame):
     def __init__(self, parent):
         ttk.LabelFrame.__init__(self, parent, text='3D View')
         tk.Canvas(self).pack()

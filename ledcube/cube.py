@@ -1,8 +1,7 @@
 import numpy as np
-import json
+
 
 class Pattern:
-
     def __init__(self, dim):
         self.length = dim[0]
         self.width = dim[1]
@@ -27,17 +26,16 @@ class Pattern:
         self.frames.pop(index)
 
     def get_frame(self, index):
-        frame_values = self.frames[index].values.reshape(self.length*self.height*self.width)
+        frame_values = self.frames[index].values.reshape(self.length * self.height * self.width)
         return list(frame_values)
 
     def move_frame_up(self, index):
-        self.frames.insert(index-1, self.frames.pop(index))
+        self.frames.insert(index - 1, self.frames.pop(index))
 
     def move_frame_down(self, index):
-        self.frames.insert(index+1, self.frames.pop(index))
+        self.frames.insert(index + 1, self.frames.pop(index))
 
     def save(self, filename):
-        json.dumps(self.frames)
         pass
 
     def load(self, filename):
@@ -46,8 +44,7 @@ class Pattern:
 
 
 class Frame:
-
-    def __init__(self,dim, values, duration):
+    def __init__(self, dim, values, duration):
         self.values = np.array(values)
         self.values = self.values.reshape((dim[0], dim[1], dim[2]))
         print(self.values)
