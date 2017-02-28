@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <title>LED Cube Pattern Generator</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+    <div class="content-container">
+        <h1>LED Cube Pattern Generator</h1>
+        <div id="main-menu">
+            <button id="btn-new-pattern" type="button" class="btn-main">New Pattern</button>
+            <button id="btn-load-pattern" type="button" class="btn-main">Load Pattern</button>
+            <button id="btn-save-pattern" type="button" class="btn-main">Save Pattern</button>
+            <button id="btn-export-pattern" type="button" class="btn-main">Export Pattern</button>
+        </div>
+        <div class="group">
+            <div id="pattern-menu">
+                <button id="btn-add-frame" type="button" class="btn-pattern">Add Frame</button>
+                <button id="btn-del-frame" type="button" class="btn-pattern">Delete Frame</button>
+                <button id="btn-mov-frame-left" type="button" class="btn-pattern">Move Frame Left</button>
+                <button id="btn-mov-frame-right" type="button" class="btn-pattern">Move Frame Right</button>
+            </div>
+            <h3>Pattern Sequence</h3>
+            <div id="pattern-view">
+            </div>
+        </div>
+        <div class="group">
+            <div id="frame-view"></div>
+            <div id="cube-view"></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/led-gui.js"></script>
+<script type="text/javascript" src="js/three.min.js"></script>
+<script type="text/javascript" src="js/OrbitControls.js"></script>
+<script type="text/javascript" src="js/led-view.js"></script>
+
+</html>
