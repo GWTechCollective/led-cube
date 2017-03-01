@@ -11,7 +11,7 @@ viewWindow.appendChild(renderer.domElement);
 
 camera.position.z = 5;
 
-var controls = new THREE.OrbitControls(camera);
+var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 // define geometries
 var geometry_led = new THREE.BoxGeometry(0.25,0.25,0.25);
@@ -19,7 +19,7 @@ var geometry_base = new THREE.BoxGeometry(3,0.25,3);
 
 // define materials
 var material_on = new THREE.MeshBasicMaterial({color: 0xFF0000});
-var material_off = new THREE.MeshBasicMaterial({color: 0x590808});
+var material_off = new THREE.MeshBasicMaterial({color: 0x380606});
 var material_base = new THREE.MeshBasicMaterial({color: 0xAA4500});
 
 
